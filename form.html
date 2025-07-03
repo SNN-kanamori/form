@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>在庫記録フォーム</title>
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+</head>
+<body>
+  <h2>在庫を記録</h2>
+  <form id="stockForm">
+    <label>購入店: <input type="text" name="item" required></label><br><br>
+    <label>数量　: <input type="number" name="amount" required></label><br><br>
+    <label>班　　: <input type="text" name="memo"></label><br><br>
+    <button type="submit">送信</button>
+  </form>
+
+  <script>
+    const GAS_URL = https://script.google.com/macros/s/AKfycbxcJtVyQ4ugQqaCsOy5NqSrGy5lrsPs5YWauPto2DvsdNrdXXi2ypQIlkKE_Cfrvsup0Q/exec
+    const LIFF_ID = '<<ここにLIFFのIDを貼る>>';
+
+    async function main() {
+      await liff.init({ liffId: LIFF_ID });
+      const profile = await liff.getProfile();
+      const user = profile.displayName;
+
+      document.getElementById("stockForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+        const data = {
+          item: this.item.value,
+          amount: this.amount.value,
+          memo: this.memo.value,
+          user: user
+        };
+
+        fetch(GAS_URL, {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }).then(() => {
+          alert("記録しました！");
+          liff.closeWindow(); // LINEアプリのフォーム画面を閉じる
+        }).catch(err => {
+          alert("エラーが発生しました: " + err);
+        });
+      });
+    }
+
+    main();
+  </script>
+</body>
+</html>
