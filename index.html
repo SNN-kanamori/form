@@ -8,9 +8,9 @@
 <body>
   <h2>在庫を記録</h2>
   <form id="stockForm">
-    <label>購入店: <input type="text" name="item" required></label><br><br>
+    <label>購入店: <input type="text" name="store" required></label><br><br>
     <label>数量　: <input type="number" name="amount" required></label><br><br>
-    <label>班　　: <input type="text" name="memo"></label><br><br>
+    <label>班　　: <input type="text" name="team"></label><br><br>
     <button type="submit">送信</button>
   </form>
 
@@ -26,9 +26,9 @@
       document.getElementById("stockForm").addEventListener("submit", function(e) {
         e.preventDefault();
         const data = {
-          item: this.item.value,
+          store: this.item.value,
           amount: this.amount.value,
-          memo: this.memo.value,
+          team: this.memo.value,
           user: user
         };
 
