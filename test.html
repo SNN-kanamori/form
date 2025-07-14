@@ -7,20 +7,17 @@
 <body>
   <form action="https://script.google.com/macros/s/AKfycbxQ156yehc_o4SqHd-EqL67A2ueuknV7IPVUOSHfQw0-ym6kky5I_eHmBDPpDCz3Q8b8w/exec" method="POST">
  
-    <label>購入先<span class="required">※必須</span></label><br>
-    <input type="radio" name="store" id="store1" value="山口屋" required />
-    <label for="store1">山口屋</label>
-    <input type="radio" name="store" id="store2" value="桑原石油店" required />
-    <label for="store2">桑原石油店</label>
-  <!-- 購入班（テキスト入力） -->
-    <label for="team">購入班<span class="required">※必須</span></label><br>
-    <input type="text" name="team" id="team" required />
-  <!-- 数量（数値入力） -->
-    <label for="quantity">数量<span class="required">※必須</span></label><br>
-    <input type="number" name="quantity" id="quantity" required min="1" />
-  <!-- 送信ボタン -->
-    <button type="submit">送信する</button>
-  </form>
+ <label for="number">番号<span class="required">必須</span></label>
+  <input type="radio" name="number" id="radio1" required value="1" />1 
+  <input type="radio" name="number" id="radio2" required value="2" />2 
+  <input type="radio" name="number" id="radio3" required value="3" />3
+
+  <label for="name">氏名<span class="required">必須</span></label>
+  <input type="text" name="name" id="name" required />
+  <label for="message">メッセージ<span class="required">必須</span></label>
+  <textarea type="text" name="message" id="message" required></textarea>
+  <button type="submit">Submit</button>
+</form>
 　
 </body>
 </html>
