@@ -7,13 +7,13 @@
 <body>
   <h2>在庫を記録</h2>
   <form action="デブロイ後のURLが入る" method="POST">
-    <label for="number">番号<span class="required">必須</span></label>
-    <input type="radio" name="number" id="radio1" required value="1" />1 
-    <input type="radio" name="number" id="radio2" required value="2" />2 
-    <input type="radio" name="number" id="radio3" required value="3" />3
+    <label for="number">購入店<span class="required">必須</span></label>
+    <input type="radio" name="store" id="radio1" required value="桑原石油店" />桑原石油店
+    <input type="radio" name="store" id="radio2" required value="山口屋" />山　口　屋
+    
 
-    <label for="name">氏名<span class="required">必須</span></label>
-    <input type="text" name="name" id="name" required />
+    <label for="name">購入班<span class="required">必須</span></label>
+    <input type="text" name="group" id="group" required />
     <label for="message">メッセージ<span class="required">必須</span></label>
     <textarea type="text" name="message" id="message" required></textarea>
     <button type="submit">Submit</button>
