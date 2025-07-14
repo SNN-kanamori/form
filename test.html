@@ -6,14 +6,19 @@
 </head>
 <body>
   <h2>在庫を記録</h2>
-  <form id="stockForm">
-    <label>購入店: <input type="text" name="store" required></label><br><br>
-    <label>数量　: <input type="number" name="amount" required></label><br><br>
-    <label>班　　: <input type="text" name="team"></label><br><br>
-    <label>ユーザー名: <input type="text" name="user"></label><br><br>
-    <button type="submit">送信</button>
-  </form>
+  <form action="デブロイ後のURLが入る" method="POST">
+    <label for="number">番号<span class="required">必須</span></label>
+    <input type="radio" name="number" id="radio1" required value="1" />1 
+    <input type="radio" name="number" id="radio2" required value="2" />2 
+    <input type="radio" name="number" id="radio3" required value="3" />3
 
+    <label for="name">氏名<span class="required">必須</span></label>
+    <input type="text" name="name" id="name" required />
+    <label for="message">メッセージ<span class="required">必須</span></label>
+    <textarea type="text" name="message" id="message" required></textarea>
+    <button type="submit">Submit</button>
+  </form>
+　
   <script>
     const GAS_URL = "https://script.google.com/macros/s/AKfycbyp6BqtqQG0VVHwnP9z8gtvNsqSaUsYFH7xpaqG7jln7Jd1_3PW0SSVKWLP-0-Bp9HG/exec";
 
