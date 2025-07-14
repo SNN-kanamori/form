@@ -2,54 +2,45 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>在庫記録フォーム</title>
-  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <title>在庫を記録</title>
 </head>
 <body>
   <h2>在庫を記録</h2>
   <form id="stockForm">
-    <label>購入店: <input type="text" name="store" required></label><br><br>
-    <label>数量　: <input type="number" name="amount" required></label><br><br>
-    <label>班　　: <input type="text" name="team" required></label><br><br>
-    <input type="hidden" name="user" id="userField">
+    <label>購入店: <input type="text" id="store" required></label><br><br>
+    <label>数量　: <input type="number" id="amount" required></label><br><br>
+    <label>班　　: <input type="text" id="team"></label><br><br>
+    <label>ユーザー名: <input type="text" id="user"></label><br><br>
     <button type="submit">送信</button>
   </form>
 
   <script>
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbzVMGhu6kg3M2KXtncfy_G9FKVzPjM-GOOGqK2fITn-b0-gcRB-NXGzrEaDa_2VvvCL/exec";
-    const LIFF_ID = "2007685103-P26pEq9z";
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbyp6BqtqQG0VVHwnP9z8gtvNsqSaUsYFH7xpaqG7jln7Jd1_3PW0SSVKWLP-0-Bp9HG/exec";
 
-    async function main() {
-      await liff.init({ liffId: LIFF_ID });
-      const profile = await liff.getProfile();
-      document.getElementById("userField").value = profile.displayName;
+    document.getElementById("stockForm").addEventListener("submit", function(e) {
+      e.preventDefault();  // ← これでフォームのデフォルト送信（GET）を阻止
 
-      document.getElementById("stockForm").addEventListener("submit", function(e) {
-        e.preventDefault();
-        const form = e.target;
-        const data = {
-          store: form.store.value,
-          amount: form.amount.value,
-          team: form.team.value,
-          user: form.user.value
-        };
+      const data = {
+        store: document.getElementById("store").value,
+        amount: document.getElementById("amount").value,
+        team: document.getElementById("team").value,
+        user: document.getElementById("user").value
+      };
 
-        fetch(GAS_URL, {
-          method: "POST",
-          body: JSON.stringify(data),
-          headers: {
-            "Content-Type": "application/json"
-          }
-        })
-        .then(() => {
-          alert("記録しました！");
-          liff.closeWindow();
-        })
-        .catch(err => alert("送信失敗: " + err));
-      });
-    }
-
-    main();
+      fetch(GAS_URL, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      .then(res => {
+        if (!res.ok) throw new Error("Network response was not ok");
+        return res.text();
+      })
+      .then(() => alert("送信成功！"))
+      .catch(err => alert("送信失敗: " + err));
+    });
   </script>
 </body>
 </html>
