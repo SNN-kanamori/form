@@ -10,26 +10,28 @@
   <form id="stockForm">
     <label>購入店: <input type="text" name="store" required></label><br><br>
     <label>数量　: <input type="number" name="amount" required></label><br><br>
-    <label>班　　: <input type="text" name="team"></label><br><br>
+    <label>班　　: <input type="text" name="team" required></label><br><br>
+    <input type="hidden" name="user" id="userField">
     <button type="submit">送信</button>
   </form>
 
   <script>
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbwdHPJ2Okt_BXsQDIeJ1_U5i_jUIaj3VxW9NQ2jnNtZWjrydwXJqvc_UaD9HJ0eMOB-_g/exec"
-    const LIFF_ID = "2007685103-P26pEq9z"
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbzVMGhu6kg3M2KXtncfy_G9FKVzPjM-GOOGqK2fITn-b0-gcRB-NXGzrEaDa_2VvvCL/exec";
+    const LIFF_ID = "2007685103-P26pEq9z";
 
     async function main() {
       await liff.init({ liffId: LIFF_ID });
       const profile = await liff.getProfile();
-      const user = profile.displayName;
+      document.getElementById("userField").value = profile.displayName;
 
       document.getElementById("stockForm").addEventListener("submit", function(e) {
         e.preventDefault();
+        const form = e.target;
         const data = {
-          store: this.item.value,
-          amount: this.amount.value,
-          team: this.memo.value,
-          user: user
+          store: form.store.value,
+          amount: form.amount.value,
+          team: form.team.value,
+          user: form.user.value
         };
 
         fetch(GAS_URL, {
@@ -38,12 +40,12 @@
           headers: {
             "Content-Type": "application/json"
           }
-        }).then(() => {
+        })
+        .then(() => {
           alert("記録しました！");
-          liff.closeWindow(); // LINEアプリのフォーム画面を閉じる
-        }).catch(err => {
-          alert("エラーが発生しました: " + err);
-        });
+          liff.closeWindow();
+        })
+        .catch(err => alert("送信失敗: " + err));
       });
     }
 
