@@ -6,17 +6,32 @@
 </head>
 <body>
   <h2>在庫を記録</h2>
-  <form action="デブロイ後のURLが入る" method="POST">
-    <label for="number">購入店<span class="required">必須</span></label>
-    <input type="radio" name="store" id="radio1" required value="桑原石油店" />桑原石油店
-    <input type="radio" name="store" id="radio2" required value="山口屋" />山　口　屋
-    
+  <form action="デプロイ後のURLが入る" method="POST">
+  <!-- 購入先（ラジオボタン） -->
+  <div>
+    <label>購入先<span class="required">※必須</span></label><br>
+    <input type="radio" name="store" id="store1" value="〇〇店" required />
+    <label for="store1">〇〇店</label>
+    <input type="radio" name="store" id="store2" value="△△店" required />
+    <label for="store2">△△店</label>
+  </div>
 
-    <label for="name">購入班<span class="required">必須</span></label>
-    <input type="text" name="group" id="group" required />
-    <label for="message">メッセージ<span class="required">必須</span></label>
-    <textarea type="text" name="message" id="message" required></textarea>
-    <button type="submit">Submit</button>
+  <!-- 購入班（テキスト入力） -->
+  <div>
+    <label for="team">購入班<span class="required">※必須</span></label><br>
+    <input type="text" name="team" id="team" required />
+  </div>
+
+  <!-- 数量（数値入力） -->
+  <div>
+    <label for="quantity">数量<span class="required">※必須</span></label><br>
+    <input type="number" name="quantity" id="quantity" required min="1" />
+  </div>
+
+  <!-- 送信ボタン -->
+  <div>
+    <button type="submit">送信する</button>
+  </div>
   </form>
 　
   <script>
