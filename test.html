@@ -22,30 +22,5 @@
     <button type="submit">送信する</button>
   </form>
 　
-  <script>
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbyp6BqtqQG0VVHwnP9z8gtvNsqSaUsYFH7xpaqG7jln7Jd1_3PW0SSVKWLP-0-Bp9HG/exec";
-
-    document.getElementById("stockForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-
-      const form = e.target;
-      const data = {
-        store: form.store.value,
-        amount: form.amount.value,
-        team: form.team.value,
-        user: form.user.value
-      };
-
-      fetch(GAS_URL, {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json"
-        }
-      })
-      .then(() => alert("送信成功！"))
-      .catch(err => alert("エラー: " + err));
-    });
-  </script>
 </body>
 </html>
