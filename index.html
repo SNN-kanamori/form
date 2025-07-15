@@ -1,26 +1,27 @@
+
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>シンプル在庫フォーム</title>
+  <title>在庫テスト</title>
 </head>
 <body>
-  <h2>在庫入力</h2>
-  <form id="simpleForm">
+  <h2>テスト送信</h2>
+  <form id="stockForm">
     <label>名前: <input type="text" name="name" required></label><br><br>
     <label>数量: <input type="number" name="amount" required></label><br><br>
     <button type="submit">送信</button>
   </form>
 
   <script>
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbzyv3rVQvGID6jEiCE5Xicln5e4XbW-xsqAkWqHF2kjLBX534q07IhgoupQBUcmEG8ciA/exec";
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbxdPEvCuXguUzsC1ExCntXakVGmbqSVNlRz3VOfnPiyAfkZKdP2LsGJvwjjIz_5lkPf/exec";
 
-    document.getElementById("simpleForm").addEventListener("submit", function(e) {
+    document.getElementById("stockForm").addEventListener("submit", function(e) {
       e.preventDefault();
-
+      const form = e.target;
       const data = {
-        name: this.name.value,
-        amount: this.amount.value
+        name: form.name.value,
+        amount: form.amount.value
       };
 
       fetch(GAS_URL, {
@@ -30,13 +31,9 @@
         },
         body: JSON.stringify(data)
       })
-      .then(res => res.text())
-      .then(txt => {
-        alert("送信成功: " + txt);
-      })
-      .catch(err => {
-        alert("送信失敗: " + err);
-      });
+      .then(response => response.text())
+      .then(result => alert("送信結果: " + result))
+      .catch(err => alert("送信失敗: " + err));
     });
   </script>
 </body>
