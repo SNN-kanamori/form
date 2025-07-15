@@ -6,35 +6,19 @@
   <title>在庫テスト</title>
 </head>
 <body>
-  <h2>テスト送信</h2>
-  <form id="stockForm">
-    <label>名前: <input type="text" name="name" required></label><br><br>
-    <label>数量: <input type="number" name="amount" required></label><br><br>
-    <button type="submit">送信</button>
-  </form>
+  <form action="https://script.google.com/macros/s/AKfycbxdPEvCuXguUzsC1ExCntXakVGmbqSVNlRz3VOfnPiyAfkZKdP2LsGJvwjjIz_5lkPf/exec" method="POST">
+  <label for="number">番号<span class="required">必須</span></label>
+  <input type="radio" name="number" id="radio1" required value="1" />1 
+  <input type="radio" name="number" id="radio2" required value="2" />2 
+  <input type="radio" name="number" id="radio3" required value="3" />3
 
-  <script>
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbxdPEvCuXguUzsC1ExCntXakVGmbqSVNlRz3VOfnPiyAfkZKdP2LsGJvwjjIz_5lkPf/exec";
+  <label for="name">氏名<span class="required">必須</span></label>
+  <input type="text" name="name" id="name" required />
+  <label for="message">メッセージ<span class="required">必須</span></label>
+  <textarea type="text" name="message" id="message" required></textarea>
+  <button type="submit">Submit</button>
+</form>
 
-    document.getElementById("stockForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-      const form = e.target;
-      const data = {
-        name: form.name.value,
-        amount: form.amount.value
-      };
 
-      fetch(GAS_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-      })
-      .then(response => response.text())
-      .then(result => alert("送信結果: " + result))
-      .catch(err => alert("送信失敗: " + err));
-    });
-  </script>
 </body>
 </html>
