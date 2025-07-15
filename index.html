@@ -2,44 +2,41 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>在庫を記録</title>
+  <title>シンプル在庫フォーム</title>
 </head>
 <body>
-  <h2>在庫を記録</h2>
-  <form id="stockForm">
-    <label>購入店: <input type="text" id="store" required></label><br><br>
-    <label>数量　: <input type="number" id="amount" required></label><br><br>
-    <label>班　　: <input type="text" id="team"></label><br><br>
-    <label>ユーザー名: <input type="text" id="user"></label><br><br>
+  <h2>在庫入力</h2>
+  <form id="simpleForm">
+    <label>名前: <input type="text" name="name" required></label><br><br>
+    <label>数量: <input type="number" name="amount" required></label><br><br>
     <button type="submit">送信</button>
   </form>
 
   <script>
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbyEUgXll3vtjU5HS1Y89sb47zKEAZVSP0drjgiTtxyze4M3Eau_3nZY4Zv_TrxlbLr6/exec";
+    const GAS_URL = "★ここにデプロイURLを貼って★";
 
-    document.getElementById("stockForm").addEventListener("submit", function(e) {
-      e.preventDefault();  // ← これでフォームのデフォルト送信（GET）を阻止
+    document.getElementById("simpleForm").addEventListener("submit", function(e) {
+      e.preventDefault();
 
       const data = {
-        store: document.getElementById("store").value,
-        amount: document.getElementById("amount").value,
-        team: document.getElementById("team").value,
-        user: document.getElementById("user").value
+        name: this.name.value,
+        amount: this.amount.value
       };
 
       fetch(GAS_URL, {
         method: "POST",
-        body: JSON.stringify(data),
         headers: {
           "Content-Type": "application/json"
-        }
+        },
+        body: JSON.stringify(data)
       })
-      .then(res => {
-        if (!res.ok) throw new Error("Network response was not ok");
-        return res.text();
+      .then(res => res.text())
+      .then(txt => {
+        alert("送信成功: " + txt);
       })
-      .then(() => alert("送信成功！"))
-      .catch(err => alert("送信失敗: " + err));
+      .catch(err => {
+        alert("送信失敗: " + err);
+      });
     });
   </script>
 </body>
