@@ -1,23 +1,44 @@
-
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
+  <title>在庫テスト</title>
   <link rel="stylesheet" href="test.css">
 </head>
 <body>
-  <form action="https://script.google.com/macros/s/AKfycbxdPEvCuXguUzsC1ExCntXakVGmbqSVNlRz3VOfnPiyAfkZKdP2LsGJvwjjIz_5lkPf/exec" method="POST">
-  <label for="number">番号<span class="required">必須</span></label>
-  <input type="radio" name="number" id="radio1" required value="1" />1 
-  <input type="radio" name="number" id="radio2" required value="2" />2 
-  <input type="radio" name="number" id="radio3" required value="3" />3
+  <h2>テスト送信</h2>
+  <form id="dataForm">
+  	<label for="number">番号<span class="required">必須</span></label>
+  	<input type="radio" name="number" id="radio1" required value="1" />1 
+  	<input type="radio" name="number" id="radio2" required value="2" />2 
+  	<input type="radio" name="number" id="radio3" required value="3" />3
 
-  <label for="name">氏名<span class="required">必須</span></label>
-  <input type="text" name="name" id="name" required />
-  <label for="message">メッセージ<span class="required">必須</span></label>
-  <textarea type="text" name="message" id="message" required></textarea>
-  <button type="submit">Submit</button>
-</form>
+  	<label for="name">氏名<span class="required">必須</span></label>
+  	<input type="text" name="name" id="name" required />
+  	<label for="message">メッセージ<span class="required">必須</span></label>
+  	<textarea name="message" id="message" required></textarea>
+  	<button type="submit">送信</button>
+  </form>
 
+  <script>
+   	const form = document.getElementById("dataForm");
+	form.addEventListener("submit", function (e) {
+ 	 e.preventDefault(); // デフォルトのフォーム送信を無効化
+  	 const formData = new FormData(e.target); 
 
+	fetch("https://script.google.com/macros/s/AKfycbxdPEvCuXguUzsC1ExCntXakVGmbqSVNlRz3VOfnPiyAfkZKdP2LsGJvwjjIz_5lkPf/exec", {
+    		method: "POST",
+    		body: formData,
+  	})
+    		.then((response) => response.text())
+    		.then((text) => {
+    	 	 // フォームの内容をメッセージに置き換える
+     	 	form.innerHTML = `${text}`;
+   	 })
+   	.catch((error) => {
+    	  form.innerHTML = `エラーが発生しました: ${error.message}`;
+    	});
+  });
+  </script>
 </body>
 </html>
