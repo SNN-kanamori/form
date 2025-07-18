@@ -3,42 +3,75 @@
 <head>
   <meta charset="UTF-8">
   <title>軽油購入フォーム</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       font-family: sans-serif;
       padding: 20px;
+      font-size: 1.2em;
+      background-color: #f9f9f9;
     }
 
     #stockDisplay {
-      background: #f9f9f9;
-      padding: 10px;
+      background: #fffbea;
+      padding: 15px;
       margin-bottom: 20px;
       border: 1px solid #ccc;
       border-radius: 5px;
+      font-weight: bold;
+    }
+
+    form {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
     label {
       display: block;
-      margin-top: 10px;
+      margin-top: 15px;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    .radio-group {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
     }
 
     input[type="radio"] {
-      margin-right: 10px;
+      margin-right: 5px;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 1em;
+      margin-top: 5px;
+      box-sizing: border-box;
     }
 
     button {
-      margin-top: 15px;
-      padding: 10px;
+      margin-top: 20px;
+      padding: 15px;
       width: 100%;
       background: #4CAF50;
       color: white;
       border: none;
-      border-radius: 4px;
+      border-radius: 5px;
+      font-size: 1.1em;
     }
 
     #message {
       margin-top: 20px;
-      font-weight: bold;
+      color: #31708f;
+      background-color: #d9edf7;
+      padding: 10px;
+      border-radius: 5px;
+      display: none;
     }
   </style>
 </head>
@@ -47,16 +80,20 @@
   <div id="stockDisplay">在庫読み込み中...</div>
 
   <form id="fuelForm">
-    <label>購入店（必須）</label>
-    <label><input type="radio" name="store" value="山口屋" required>山口屋</label>
-    <label><input type="radio" name="store" value="桑原石油" required>桑原石油</label>
+    <label>購入店</label>
+    <div class="radio-group">
+      <label><input type="radio" name="store" value="山口屋" required>山口屋</label>
+      <label><input type="radio" name="store" value="桑原石油" required>桑原石油</label>
+    </div>
 
-    <label>班名（必須）</label>
-    <label><input type="radio" name="team" value="田中班" required>田中班</label>
-    <label><input type="radio" name="team" value="安田班" required>安田班</label>
+    <label>班名</label>
+    <div class="radio-group">
+      <label><input type="radio" name="team" value="田中班" required>田中班</label>
+      <label><input type="radio" name="team" value="安田班" required>安田班</label>
+    </div>
 
-    <label>購入量（L 単位で入力）</label>
-    <input type="number" name="amount" required>
+    <label>購入量（L）</label>
+    <input type="number" name="amount" required placeholder="例：40">
 
     <button type="submit">送信</button>
   </form>
@@ -66,23 +103,30 @@
   <script>
     const GAS_URL = "https://script.google.com/macros/s/AKfycbxdPEvCuXguUzsC1ExCntXakVGmbqSVNlRz3VOfnPiyAfkZKdP2LsGJvwjjIz_5lkPf/exec";
 
-    // 在庫取得
-    fetch(GAS_URL)
-      .then(res => res.json())
-      .then(data => {
-        const stockText = Object.entries(data)
-          .map(([store, stock]) => `${store}：${stock}L`)
-          .join(" ／ ");
-        document.getElementById("stockDisplay").textContent = "現在の在庫： " + stockText;
-      })
-      .catch(() => {
-        document.getElementById("stockDisplay").textContent = "在庫を取得できませんでした。";
-      });
+    const stockDisplay = document.getElementById("stockDisplay");
+    const messageBox = document.getElementById("message");
+    const form = document.getElementById("fuelForm");
 
-    // 送信処理
-    document.getElementById("fuelForm").addEventListener("submit", e => {
+    function updateStock() {
+      fetch(GAS_URL)
+        .then(res => res.json())
+        .then(data => {
+          const stockText = Object.entries(data)
+            .map(([store, stock]) => `${store}：${stock}L`)
+            .join(" ／ ");
+          stockDisplay.textContent = "現在の在庫： " + stockText;
+        })
+        .catch(() => {
+          stockDisplay.textContent = "在庫を取得できませんでした。";
+        });
+    }
+
+    // 初回在庫表示
+    updateStock();
+
+    form.addEventListener("submit", e => {
       e.preventDefault();
-      const formData = new FormData(e.target);
+      const formData = new FormData(form);
 
       fetch(GAS_URL, {
         method: "POST",
@@ -90,21 +134,23 @@
       })
       .then(res => res.text())
       .then(text => {
-        document.getElementById("message").textContent = text;
+        messageBox.textContent = text;
+        messageBox.style.display = "block";
 
-        // 再度在庫取得
-        return fetch(GAS_URL);
+        // 3秒後にメッセージを非表示に
+        setTimeout(() => {
+          messageBox.style.display = "none";
+        }, 3000);
+
+        form.reset();
+        updateStock();
       })
-      .then(res => res.json())
-      .then(data => {
-        const stockText = Object.entries(data)
-          .map(([store, stock]) => `${store}：${stock}L`)
-          .join(" ／ ");
-        document.getElementById("stockDisplay").textContent = "現在の在庫： " + stockText;
-        document.getElementById("fuelForm").reset();
+      .catch(err => {
+        messageBox.textContent = "送信エラー: " + err;
+        messageBox.style.display = "block";
       });
     });
   </script>
+
 </body>
 </html>
-
