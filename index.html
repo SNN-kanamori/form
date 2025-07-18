@@ -121,6 +121,7 @@
 
     <button type="submit">送信</button>
   </form>
+  <div id="response" style="margin-top: 20px; font-weight: bold; color: #007700;"></div>
 
   <script>
     const form = document.getElementById("dataForm");
@@ -134,8 +135,10 @@
       })
       .then((response) => response.text())
       .then((text) => {
-        form.innerHTML = `<p>${text}</p>`;
-      })
+        document.getElementById("response").innerText = text;
+        form.reset();  // フォーム内容をリセット（任意）
+    })
+
       .catch((error) => {
         form.innerHTML = `<p>エラーが発生しました: ${error.message}</p>`;
       });
