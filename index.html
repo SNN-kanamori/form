@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>在庫テスト</title>
+  <title>軽油購入報告フォーム</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
@@ -102,21 +102,21 @@
 </head>
 <body>
   <form id="dataForm">
-    <h2>在庫記録フォーム</h2>
+    <h2>軽油購入報告フォーム</h2>
 
-    <label>購入店 <span class="required">必須</span></label>
+    <label>購入店 </label>
     <div class="radio-group">
       <label><input type="radio" name="number" value="1" required> 山口屋</label>
       <label><input type="radio" name="number" value="2"> 桑原石油店</label>
     </div>
 
-    <label>班名 <span class="required">必須</span></label>
+    <label>班名 </label>
     <div class="radio-group">
-      <label><input type="radio" name="name" value="安田班" required> 安田班</label>
-      <label><input type="radio" name="name" value="中村班"> 中村班</label>
+      <label><input type="radio" name="name" value="田中班" required> 田中班</label>
+      <label><input type="radio" name="name" value="安田班"> 安田班</label>
     </div>
 
-    <label>購入量（L） <span class="required">必須</span></label>
+    <label>購入量（L）</label>
     <input type="number" name="message" inputmode="numeric" required placeholder="例: 400" />
 
     <button type="submit">送信</button>
