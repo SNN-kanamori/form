@@ -1,154 +1,110 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html>
 <head>
   <meta charset="UTF-8">
-  <title>軽油購入報告フォーム</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>軽油購入フォーム</title>
   <style>
     body {
-      font-family: "Hiragino Kaku Gothic ProN", "Helvetica", Arial, sans-serif;
-      background-color: #f0f0f0;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      min-height: 100vh;
+      font-family: sans-serif;
+      padding: 20px;
     }
 
-    form {
-      background-color: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-      width: 90%;
-      max-width: 500px;
-      margin-top: 30px;
-    }
-
-    h2 {
-      text-align: center;
-      margin-top: 0;
-      color: #333;
+    #stockDisplay {
+      background: #f9f9f9;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
     }
 
     label {
       display: block;
-      margin-top: 20px;
-      font-weight: bold;
-      color: #333;
+      margin-top: 10px;
     }
 
-    .required {
-      color: #ff4136;
-      font-size: 0.8em;
-      margin-left: 10px;
-      font-weight: normal;
-    }
-
-    .radio-group {
-      display: flex;
-      gap: 15px;
-      flex-wrap: wrap;
-      margin-top: 5px;
-    }
-
-    .radio-group label {
-      display: flex;
-      align-items: center;
-      font-weight: normal;
-      margin: 0;
-    }
-
-    input[type="text"],
-    input[type="number"],
-    textarea {
-      width: 100%;
-      padding: 10px;
-      margin-top: 8px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      box-sizing: border-box;
-    }
-
-    input[type="number"] {
-      appearance: textfield;
-    }
-
-    input:focus,
-    textarea:focus {
-      outline: none;
-      border-color: #4caf50;
-      box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+    input[type="radio"] {
+      margin-right: 10px;
     }
 
     button {
-      margin-top: 25px;
+      margin-top: 15px;
+      padding: 10px;
       width: 100%;
-      padding: 12px;
-      background-color: #4caf50;
+      background: #4CAF50;
       color: white;
       border: none;
       border-radius: 4px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
     }
 
-    button:hover {
-      background-color: #45a049;
+    #message {
+      margin-top: 20px;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <form id="dataForm">
-    <h2>軽油購入報告フォーム</h2>
 
-    <label>購入店 </label>
-    <div class="radio-group">
-      <label><input type="radio" name="number" value="1" required> 山口屋</label>
-      <label><input type="radio" name="number" value="2"> 桑原石油店</label>
-    </div>
+  <div id="stockDisplay">在庫読み込み中...</div>
 
-    <label>班名 </label>
-    <div class="radio-group">
-      <label><input type="radio" name="name" value="田中班" required> 田中班</label>
-      <label><input type="radio" name="name" value="安田班"> 安田班</label>
-    </div>
+  <form id="fuelForm">
+    <label>購入店（必須）</label>
+    <label><input type="radio" name="store" value="山口屋" required>山口屋</label>
+    <label><input type="radio" name="store" value="桑原石油" required>桑原石油</label>
 
-    <label>購入量（L）</label>
-    <input type="number" name="message" inputmode="numeric" required placeholder="例: 400" />
+    <label>班名（必須）</label>
+    <label><input type="radio" name="team" value="田中班" required>田中班</label>
+    <label><input type="radio" name="team" value="安田班" required>安田班</label>
+
+    <label>購入量（L 単位で入力）</label>
+    <input type="number" name="amount" required>
 
     <button type="submit">送信</button>
   </form>
 
+  <div id="message"></div>
+
   <script>
-    const form = document.getElementById("dataForm");
-    form.addEventListener("submit", function (e) {
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbxdPEvCuXguUzsC1ExCntXakVGmbqSVNlRz3VOfnPiyAfkZKdP2LsGJvwjjIz_5lkPf/exec";
+
+    // 在庫取得
+    fetch(GAS_URL)
+      .then(res => res.json())
+      .then(data => {
+        const stockText = Object.entries(data)
+          .map(([store, stock]) => `${store}：${stock}L`)
+          .join(" ／ ");
+        document.getElementById("stockDisplay").textContent = "現在の在庫： " + stockText;
+      })
+      .catch(() => {
+        document.getElementById("stockDisplay").textContent = "在庫を取得できませんでした。";
+      });
+
+    // 送信処理
+    document.getElementById("fuelForm").addEventListener("submit", e => {
       e.preventDefault();
       const formData = new FormData(e.target);
 
-      fetch("https://script.google.com/macros/s/AKfycbxdPEvCuXguUzsC1ExCntXakVGmbqSVNlRz3VOfnPiyAfkZKdP2LsGJvwjjIz_5lkPf/exec", {
+      fetch(GAS_URL, {
         method: "POST",
-        body: formData,
+        body: formData
       })
-      .then((response) => response.text())
-      .then((text) => {
-      form.style.display = "none"; // フォームを隠す
-      const message = document.createElement("div");
-      message.innerText = text;
-      message.style.marginTop = "20px";
-      message.style.fontWeight = "bold";
-      message.style.fontSize = "18px";
-      message.style.color = "#007700";
-      form.parentNode.appendChild(message); // フォームの直下に追加
-    })
+      .then(res => res.text())
+      .then(text => {
+        document.getElementById("message").textContent = text;
 
-
-      .catch((error) => {
-        form.innerHTML = `<p>エラーが発生しました: ${error.message}</p>`;
+        // 再度在庫取得
+        return fetch(GAS_URL);
+      })
+      .then(res => res.json())
+      .then(data => {
+        const stockText = Object.entries(data)
+          .map(([store, stock]) => `${store}：${stock}L`)
+          .join(" ／ ");
+        document.getElementById("stockDisplay").textContent = "現在の在庫： " + stockText;
+        document.getElementById("fuelForm").reset();
       });
     });
   </script>
 </body>
 </html>
+
