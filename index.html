@@ -5,34 +5,43 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>在庫テスト</title>
   <link rel="stylesheet" href="test.css">
+  <style>
+    /* ラジオボタンの行間調整 */
+    .radio-group label {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+      gap: 5px;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+  </style>
 </head>
 <body>
   <form id="dataForm">
     <h2>テスト送信</h2>
 
-    <label>購入店 </label><br>
-    <input type="radio" name="number" id="radio1" value="1" required> 山口屋
-    <input type="radio" name="number" id="radio2" value="2"> 桑原石油店
-    <br>
+    <label>購入店</label>
+    <div class="radio-group">
+      <label><input type="radio" name="number" value="1" required>山口屋</label>
+      <label><input type="radio" name="number" value="2">桑原石油店</label>
+    </div>
 
-    <label>班名 </label><br>
-    <input type="radio" name="name" value="田中班" required> 田中班
-    <input type="radio" name="name" value="安田班"> 安田班<br>
+    <label>班名 <span class="required">必須</span></label>
+    <div class="radio-group">
+      <label><input type="radio" name="name" value="田中班" required> 田中班</label>
+      <label><input type="radio" name="name" value="安田班"> 安田班</label>
+    </div>
 
-    <label>購入量（L）</label>
-    <select name="message" id="message" required>
-      <option value="" disabled selected>選択してください</option>
-      <option value="20">20</option>
-      <option value="40">40</option>
-      <option value="60">60</option>
-      <option value="80">80</option>
-      <option value="100">100</option>
-      <option value="120">120</option>
-      <option value="140">140</option>
-      <option value="160">160</option>
-      <option value="180">180</option>
-      <option value="200">200</option>
-    </select><br><br>
+    <label for="message">購入量（L）</label>
+    <input type="number" name="message" id="message" inputmode="numeric" required>
 
     <button type="submit">送信</button>
   </form>
