@@ -15,7 +15,7 @@
 #stockDisplay {
   background: #fffbea;
   padding: 15px;
-  margin-bottom: 20px;
+  margin-bottom: 0;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-weight: bold;
@@ -144,6 +144,8 @@
     form.addEventListener("submit", e => {
       e.preventDefault();
       const formData = new FormData(form);
+
+      stockDisplay.textContent = "在庫読み込み中..."
 
       fetch(GAS_URL, {
         method: "POST",
