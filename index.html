@@ -12,14 +12,27 @@
       background-color: #f9f9f9;
     }
 
-    #stockDisplay {
-      background: #fffbea;
-      padding: 15px;
-      margin-bottom: 20px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-weight: bold;
-    }
+#stockDisplay {
+  background: #fffbea;
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+#stockDisplay ul {
+  padding-left: 1em;
+  margin: 0;
+}
+
+#stockDisplay li {
+  list-style: none;
+  white-space: nowrap;
+  line-height: 1.8;
+}
+
 
     form {
       background-color: white;
@@ -111,11 +124,15 @@
       fetch(GAS_URL)
         .then(res => res.json())
         .then(data => {
-          const stockText = Object.entries(data)
-            .map(([store, stock]) => `${store}：${stock}L`)
-            .join(" ／ ");
-          stockDisplay.textContent = "現在の在庫： " + stockText;
-        })
+          const stockLines = Object.entries(data)
+          .map(([store, stock]) => `<li>${store}　${stock}L</li>`)
+          .join("");
+          stockDisplay.innerHTML = `
+          <h3>現在の在庫：</h3>
+          <ul>${stockLines}</ul>
+        `;
+      })
+
         .catch(() => {
           stockDisplay.textContent = "在庫を取得できませんでした。";
         });
